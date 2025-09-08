@@ -1,0 +1,26 @@
+# Node modules
+node_modules/
+
+# Build artifacts
+dist/
+build/
+*.js
+*.js.map
+*.d.ts
+
+# Logs
+*.log
+logs/
+
+# IDE and OS generated files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.*
+
+# Test results
+coverage/

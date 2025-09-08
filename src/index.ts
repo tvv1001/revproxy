@@ -34,20 +34,39 @@ if (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath)) {
   }
 }
 
-const target = env.ASPNETCORE_HTTPS_PORT
-  ? `https://localhost:${env.ASPNETCORE_HTTPS_PORT}`
-  : env.ASPNETCORE_URLS
-    ? env.ASPNETCORE_URLS.split(";")[0]
-    : "https://localhost:7194";
+const ApiProxy =
+  typeof env.ASPNETCORE_HTTPS_PORT === "string" && env.ASPNETCORE_HTTPS_PORT !== ""
+    ? `https://localhost:${env.ASPNETCORE_HTTPS_PORT}`
+    : typeof env.ASPNETCORE_URLS === "string" && env.ASPNETCORE_URLS !== ""
+      ? env.ASPNETCORE_URLS.split(";")[0]
+      : "https://localhost:7194";
+
+console.log(ApiProxy);
 
 // Path to your SSL/TLS certificate and key
 const sslOptions = {
   cert: fs.readFileSync(certFilePath),
   key: fs.readFileSync(keyFilePath),
 };
-
 const app = express();
+
+// // Proxy server routing to the target Server 1
+// app.all("/ninja-app1", (req, res) => {
+//   console.log("Hey Ninja! Redirecting to Server1");
+//   res.redirect(serverOne);
+// });
+
+// // Proxy server routing to the target Server 1
+// app.all("/ninja-app2/", (req, res) => {
+//   console.log("Hey Ninja! Redirecting to Server2");
+//   res.redirect(serverTwo);
+// });
+
 app.get("/", middleware);
+
+app.get("/test", middleware);
+app.get("/api/status", middleware);
+
 // Create the HTTPS server
 // https.createServer(sslOptions, (req, res) => {
 //   // Security headers
@@ -76,7 +95,7 @@ const httpServer = http.createServer({}, app);
 httpServer.listen(80, () => {
   console.log("hello world");
   console.log("HTTPS Server running on 80");
-  console.log(target);
+  console.log(ApiProxy);
 });
 
 // Initialize Express app (if needed for additional middleware)
@@ -85,5 +104,5 @@ const httpsServer = https.createServer(sslOptions, app);
 httpsServer.listen(443, () => {
   console.log("hello world");
   console.log("HTTPS Server running on 443");
-  console.log(target);
+  console.log(ApiProxy);
 });

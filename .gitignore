@@ -1,12 +1,19 @@
-# Node modules
+# Visual Studio Code
+.vscode/
+
+# Node modules for TypeScript projects
 node_modules/
+npm-debug.log
+yarn-error.log
 
 # Build artifacts
 dist/
 build/
+public/
 *.js
 *.js.map
 *.d.ts
+*.ts.map
 
 # Logs
 *.log
@@ -22,5 +29,13 @@ Thumbs.db
 .env
 .env.*
 
-# Test results
-coverage/
+# Package Manager files
+packages/
+*.nupkg
+project.lock.json
+
+# Other common ignore patterns
+*.log
+*.bak
+*.tmp
+*.vs/
